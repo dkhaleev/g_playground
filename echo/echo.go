@@ -9,13 +9,18 @@ import (
 )
 
 func main() {
-	var s, separator string
+	var separator string
+	// 2nd homework
+	// var s, separator string
 
-	s = os.Args[0] + " : "
+	//1st homework
+	// s = os.Args[0] + " : "
 	for i := 1; i < len(os.Args); i++ {
-		s += separator + os.Args[i]
+		// s += separator + os.Args[i]
 		separator = " "
+		fmt.Printf("index #%d%svalue:%s%s \n", i, separator, separator, os.Args[i])
 	}
 
-	fmt.Println(s)
+	// 2nd homework
+	// fmt.Println(s)
 }
