@@ -11,6 +11,7 @@ import (
 func main() {
 	var s, separator string
 
+	s = os.Args[0] + " : "
 	for i := 1; i < len(os.Args); i++ {
 		s += separator + os.Args[i]
 		separator = " "
