@@ -16,13 +16,17 @@ func main() {
 	input := bufio.NewScanner(os.Stdin)
 
 	for input.Scan() {
+		if input.Text() == "" {
+			break
+		}
+
 		counts[input.Text()]++
 	}
 
 	// Ignore possible errors from input.Err()
 	for line, n := range counts {
 		if n > 1 {
-			fmt.Printf("%d\t%s", n, line)
+			fmt.Printf("%d\t%s \n", n, line)
 		}
 	}
 }
