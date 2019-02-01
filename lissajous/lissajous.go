@@ -16,17 +16,26 @@ import (
 	"time"
 )
 
-var palette = []color.Color{
-	color.RGBA{0x00, 0x00, 0x00, 0xFF},
-	color.RGBA{0x4D, 0xCE, 0x5A, 0xFF}}
-
 const (
 	WhiteIndex = 0 //base color
 	BlackIndex = 1 //graph color
 )
 
+var palette = []color.Color{
+	color.RGBA{randomHex(), randomHex(), randomHex(), 0xff},
+	color.RGBA{randomHex(), randomHex(), randomHex(), 0xff}}
+
 func main() {
+	rand.Seed(time.Now().UTC().UnixNano()) // init randomizer
 	lissajous(os.Stdout)
+}
+
+func randomHex() uint8 {
+	rand.Seed(time.Now().UTC().UnixNano()) // init randomizer
+	bytes := make([]byte, 1)
+	rand.Read(bytes)
+
+	return uint8(rand.Int())
 }
 
 func lissajous(out io.Writer) {
