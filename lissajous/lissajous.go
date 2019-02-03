@@ -16,9 +16,11 @@ import (
 	"time"
 )
 
+//base color
+//graph color
 const (
-	WhiteIndex = 0 //base color
-	BlackIndex = 1 //graph color
+	WhiteIndex = 0
+	BlackIndex = 1
 )
 
 var palette = []color.Color{
