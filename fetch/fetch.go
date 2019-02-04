@@ -20,6 +20,9 @@ func main() {
 		}
 
 		response, err := http.Get(url)
+
+		fmt.Printf("Got status: %s", response.Status)
+
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "fetch: %v\n", err)
 			os.Exit(1)
