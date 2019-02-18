@@ -14,6 +14,7 @@ import (
 	"math"
 	"math/rand"
 	"net/http"
+	"strconv"
 	"time"
 )
 
@@ -33,7 +34,7 @@ func main() {
 
 func handler(w http.ResponseWriter, r *http.Request) {
 	rand.Seed(time.Now().UTC().UnixNano()) // init randomizer
-	lissajous(w)
+	lissajous(w, r)
 }
 
 func randomHex() uint8 {
@@ -43,14 +44,34 @@ func randomHex() uint8 {
 	return uint8(rand.Int())
 }
 
-func lissajous(out io.Writer) {
+func lissajous(out io.Writer, r *http.Request) {
+	var cycles = 5 //number of oscillation cycles
 	const (
-		cycles     = 5     //number of oscillation cycles
 		resolution = 0.001 //angle resolution
 		size       = 100   //canvas size
 		nframes    = 64    //frames in loop
 		delay      = 8     //interframe delay 1 = 10ms
 	)
+	//parse form first
+	if err := r.ParseForm(); err != nil {
+		log.Print(err)
+	}
+	//iterate form parameters with vals
+	for param, val := range r.Form {
+		switch param {
+		case "cycles":
+			// 	fmt.Printf(val[0])
+			// 	fmt.Printf("%T\t%s\n", cycles, cycles)
+			c, err := strconv.Atoi(val[0])
+			if err != nil {
+				log.Print(err)
+			}
+			cycles = c
+
+			break
+		}
+	}
+	// fmt.Print(r.Form["cycles"])
 	rand.Seed(time.Now().UTC().UnixNano())   // init randomizer
 	freq := rand.Float64() * 3               //relative frequency
 	animation := gif.GIF{LoopCount: nframes} //init animation struct
@@ -62,7 +83,7 @@ func lissajous(out io.Writer) {
 		rectange := image.Rect(0, 0, 2*size+1, 2*size+1) //init frame struct
 		img := image.NewPaletted(rectange, palette)      //create frame image
 
-		for j := 0.0; j < cycles*math.Pi*2; j += resolution {
+		for j := 0.0; j < float64(cycles)*math.Pi*2; j += resolution {
 			x := math.Sin(j)
 			y := math.Sin(j*freq + phase)
 			img.SetColorIndex(size+int(x*size+0.5), size+int(y*size+0.5), BlackIndex)
