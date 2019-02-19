@@ -19,7 +19,9 @@ import (
 )
 
 const (
+	//white color
 	WhiteIndex = 0
+	//black color. Sincerely, Captain Obvious
 	BlackIndex = 1
 )
 
@@ -52,16 +54,16 @@ func lissajous(out io.Writer, r *http.Request) {
 		nframes    = 64    //frames in loop
 		delay      = 8     //interframe delay 1 = 10ms
 	)
+
 	//parse form first
 	if err := r.ParseForm(); err != nil {
 		log.Print(err)
 	}
+
 	//iterate form parameters with vals
 	for param, val := range r.Form {
 		switch param {
 		case "cycles":
-			// 	fmt.Printf(val[0])
-			// 	fmt.Printf("%T\t%s\n", cycles, cycles)
 			c, err := strconv.Atoi(val[0])
 			if err != nil {
 				log.Print(err)
@@ -71,7 +73,7 @@ func lissajous(out io.Writer, r *http.Request) {
 			break
 		}
 	}
-	// fmt.Print(r.Form["cycles"])
+
 	rand.Seed(time.Now().UTC().UnixNano())   // init randomizer
 	freq := rand.Float64() * 3               //relative frequency
 	animation := gif.GIF{LoopCount: nframes} //init animation struct
