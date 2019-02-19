@@ -18,13 +18,13 @@ import (
 	"time"
 )
 
+//color Indexes. Sincerely, Captain Obvious
 const (
-	//white color
 	WhiteIndex = 0
-	//black color. Sincerely, Captain Obvious
 	BlackIndex = 1
 )
 
+//Randomize colours palette
 var palette = []color.Color{
 	color.RGBA{randomHex(), randomHex(), randomHex(), 0xff},
 	color.RGBA{randomHex(), randomHex(), randomHex(), 0xff}}
@@ -34,11 +34,13 @@ func main() {
 	log.Fatal(http.ListenAndServe("localhost:8000", nil))
 }
 
+//HTTP request handler
 func handler(w http.ResponseWriter, r *http.Request) {
 	rand.Seed(time.Now().UTC().UnixNano()) // init randomizer
 	lissajous(w, r)
 }
 
+//Random hex-byte generator for palette
 func randomHex() uint8 {
 	bytes := make([]byte, 1)
 	rand.Read(bytes)
@@ -46,6 +48,7 @@ func randomHex() uint8 {
 	return uint8(rand.Int())
 }
 
+//main gif-image generator
 func lissajous(out io.Writer, r *http.Request) {
 	var cycles = 5 //number of oscillation cycles
 	const (
