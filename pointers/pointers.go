@@ -17,4 +17,12 @@ func main() {
 
 	*p = 2
 	fmt.Println(x)
+
+	fmt.Println(incrP(&x))
+}
+
+// function increases any given variable indirectly via pointer
+func incrP(p *int) int {
+	*p++
+	return *p
 }
