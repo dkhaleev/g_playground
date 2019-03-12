@@ -6,6 +6,8 @@ Example from the Donovan and Kernighan book
 
 package conv
 
+import "fmt"
+
 //Celsius is a custom celsius type with base float64
 type Celsius float64
 
@@ -27,4 +29,8 @@ func FtoC(f Fahrenheit) Celsius {
 //CtoF Function converts temperature from Celsius type to Fahrenheit
 func CtoF(c Celsius) Fahrenheit {
 	return Fahrenheit(c*9/5 + 32)
+}
+
+func (c Celsius) String() string {
+	return fmt.Sprintf("%g degrees Celsius", c)
 }
