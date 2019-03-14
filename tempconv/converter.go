@@ -7,12 +7,22 @@ package main
 
 import (
 	"fmt"
+	"os"
+	"strconv"
 
 	"./tempconv"
 )
 
 func main() {
-	fmt.Println(tempconv.FreezingC)
-	fmt.Println(tempconv.CtoK(0))
-	fmt.Println(tempconv.KtoC(0))
+	for _, arg := range os.Args[1:] {
+		t, err := strconv.ParseFloat(arg, 64)
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "cf: %v\n", err)
+			os.Exit(1)
+		}
+		f := tempconv.Fahrenheit(t)
+		c := tempconv.Celsius(t)
+
+		fmt.Printf("%s = %s, %s = %s", f, tempconv.FtoC(f), c, tempconv.CtoF(c))
+	}
 }
