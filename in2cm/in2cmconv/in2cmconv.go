@@ -17,15 +17,15 @@ type Centimeter float64
 
 //package main constants. Literally just imperial to metric shift
 const (
-	InchShift = Centimeter 2.54
+	InchShift Centimeter = 2.54
 )
 
 //__toString()
 func (c Centimeter) String() string {
-	return fmt.Printf("%g centimeters", c)
+	return fmt.Sprintf("%g centimeters", c)
 }
 
 //__toString
 func (i Inch) String() string {
-	return fmt.Printf("g incher", i)
+	return fmt.Sprintf("%g incher", i)
 }
