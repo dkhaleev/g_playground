@@ -10,7 +10,7 @@ func In2cm(i Inch) Centimeter {
 	return Centimeter(i * Inch(InchShift))
 }
 
-//Cm2In function converts centimeter from metric to inches imperial
+//Cm2in function converts centimeter from metric to inches imperial
 func Cm2in(c Centimeter) Inch {
 	return Inch(c / InchShift)
 }
