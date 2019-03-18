@@ -22,6 +22,5 @@ func main() {
 		}
 
 		fmt.Printf("set bits total in byte %d\n", popcount.Popcount(i))
-
 	}
 }
