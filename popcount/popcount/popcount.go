@@ -16,8 +16,13 @@ func init() {
 //Popcount counts set bits in given int argument
 func Popcount(x uint64) int {
 	var num int = 0
-	for i := 0; i < 7; i++ {
-		num += int(pc[byte(x>>(uint(i)*8))])
+	for i := uint64(0); i < 64; i++ {
+		if x&(1<<i) != 0 {
+			num++
+		}
 	}
+	// for i := 0; i < 7; i++ {
+	// 	num += int(pc[byte(x>>(uint(i)*8))])
+	// }
 	return num
 }
