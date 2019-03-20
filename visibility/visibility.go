@@ -11,7 +11,7 @@ import (
 	"os"
 )
 
-var cwd string
+var cwd = "test cwd"
 
 func init() {
 	cwd, err := os.Getwd()
@@ -23,9 +23,10 @@ func init() {
 }
 
 func main() {
-	x := "hello!"
-	for i := 0; i < len(x); i++ {
-		x := x[i]
+
+	x := &cwd
+	for i := 0; i < len(*x); i++ {
+		x := (*x)[i]
 		if x != '!' {
 			x := x + 'A' - 'a'
 			fmt.Printf("%c", x)
