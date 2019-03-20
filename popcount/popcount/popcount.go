@@ -21,8 +21,6 @@ func Popcount(x uint64) int {
 			num++
 		}
 	}
-	// for i := 0; i < 7; i++ {
-	// 	num += int(pc[byte(x>>(uint(i)*8))])
-	// }
+
 	return num
 }
