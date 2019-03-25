@@ -13,6 +13,8 @@ var b uint8 = 1<<1 | 1<<2
 var metals = []string{"silver", "copper", "steel", "brass", "zinc"}
 
 func main() {
+	o := 0666
+	var p = int64(0xdeadbeef)
 	fmt.Printf("%08b\n", a)
 	fmt.Printf("%08b\n", b)
 	fmt.Printf("%08b\n", a&b)
@@ -29,4 +31,7 @@ func main() {
 	for k := len(metals) - 1; k > 0; k-- {
 		fmt.Println(metals[k])
 	}
+
+	fmt.Printf("%d %[1]o %#[1]o\n", o)
+	fmt.Printf("%d %[1]o %#[1]o %#[1]x %#[1]X %08[1]b\n", p)
 }
