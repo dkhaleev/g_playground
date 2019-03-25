@@ -10,6 +10,7 @@ import (
 
 var a uint8 = 1<<1 | 1<<5
 var b uint8 = 1<<1 | 1<<2
+var metals = []string{"silver", "copper", "steel", "brass", "zinc"}
 
 func main() {
 	fmt.Printf("%08b\n", a)
@@ -23,5 +24,9 @@ func main() {
 		if a&(1<<i) != 0 {
 			fmt.Println(i)
 		}
+	}
+
+	for k := len(metals) - 1; k > 0; k-- {
+		fmt.Println(metals[k])
 	}
 }
