@@ -47,7 +47,7 @@ func corner(i, j int) (float64, float64) {
 	//calc height of z-surface
 	z := f(x, y)
 	//isometrically project points on the 2-d canvas(sx, sy)
-	sx := width/2 + (x+y)*cos30*xyscale
+	sx := width/2 + (x-y)*cos30*xyscale
 	sy := height/2 + (x+y)*sin30*xyscale - z*zscale
 	return sx, sy
 }
