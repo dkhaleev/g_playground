@@ -29,30 +29,47 @@ func main() {
 
 	for i := 0; i < cells; i++ {
 		for j := 0; j < cells; j++ {
-			ax, ay := corner(i+1, j)
-			bx, by := corner(i, j)
-			cx, cy := corner(i, j+1)
-			dx, dy := corner(i+1, j+1)
-			fmt.Printf("<polygon points='%g, %g, %g, %g, %g, %g, %g, %g'/>\n",
-				ax, ay, bx, by, cx, cy, dx, dy)
+			var failed_a, failed_b, failed_c, failed_d bool
+			ax, ay, failed_a := corner(i+1, j)
+			bx, by, failed_b := corner(i, j)
+			cx, cy, failed_c := corner(i, j+1)
+			dx, dy, failed_d := corner(i+1, j+1)
+			if failed_a != true || failed_b != true || failed_c != true || failed_d != true {
+				continue
+			} else {
+				fmt.Printf("<polygon points='%g, %g, %g, %g, %g, %g, %g, %g'/>\n",
+					ax, ay, bx, by, cx, cy, dx, dy)
+			}
 		}
 	}
 	fmt.Println("</svg>")
 }
 
-func corner(i, j int) (float64, float64) {
+func corner(i, j int) (float64, float64, bool) {
 	//search corner point (x,y) of cell (i, j)
 	x := xyrange * (float64(i)/cells - 0.5)
 	y := xyrange * (float64(j)/cells - 0.5)
+	var zero float64
 	//calc height of z-surface
-	z := f(x, y)
+	z, ok := f(x, y)
 	//isometrically project points on the 2-d canvas(sx, sy)
 	sx := width/2 + (x-y)*cos30*xyscale
 	sy := height/2 + (x+y)*sin30*xyscale - z*zscale
-	return sx, sy
+	if math.IsInf(sx, 0) || math.IsInf(sy, 0) || math.IsNaN(sx) || math.IsNaN(sy) {
+		return zero, zero, false
+	}
+	return sx, sy, ok
 }
 
-func f(x, y float64) float64 {
+func f(x, y float64) (float64, bool) {
+	ok := true
 	r := math.Hypot(x, y) //distance from (0,0)
-	return math.Sin(r) / r
+	result := math.Sin(r) / r
+
+	//if result is NaN of Inf stop processing
+	if math.IsInf(result, 0) || math.IsNaN(result) {
+		return result, false
+	}
+
+	return result, ok
 }
