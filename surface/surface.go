@@ -23,23 +23,35 @@ const (
 var sin30, cos30 = math.Sin(angle), math.Cos(angle) //sin 30 deg and cos 30 deg
 
 func main() {
+	genSVG()
+}
+
+func genSVG() {
+
 	fmt.Printf("<svg xmlns='http://www.w3.org/2000/svg' "+
 		"style='stroke: grey; fill: white; stroke-width: 0.7' "+
-		"width='%d' height='%d'>", width, height)
+		"width='%d' height='%d'>\n", width, height)
+	var err bool
+	var ax, ay, bx, by, cx, cy, dx, dy float64
 
 	for i := 0; i < cells; i++ {
 		for j := 0; j < cells; j++ {
-			var failed_a, failed_b, failed_c, failed_d bool
-			ax, ay, failed_a := corner(i+1, j)
-			bx, by, failed_b := corner(i, j)
-			cx, cy, failed_c := corner(i, j+1)
-			dx, dy, failed_d := corner(i+1, j+1)
-			if failed_a != true || failed_b != true || failed_c != true || failed_d != true {
+			if ax, ay, err = corner(i+1, j); !err {
 				continue
-			} else {
-				fmt.Printf("<polygon points='%g, %g, %g, %g, %g, %g, %g, %g'/>\n",
-					ax, ay, bx, by, cx, cy, dx, dy)
 			}
+			if bx, by, err = corner(i, j); !err {
+				continue
+			}
+			if cx, cy, err = corner(i, j+1); !err {
+				continue
+			}
+			if dx, dy, err = corner(i+1, j+1); !err {
+				continue
+			}
+
+			fmt.Printf("<polygon points='%g, %g, %g, %g, %g, %g, %g, %g'/>\n",
+				ax, ay, bx, by, cx, cy, dx, dy)
+
 		}
 	}
 	fmt.Println("</svg>")
