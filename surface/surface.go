@@ -75,8 +75,11 @@ func corner(i, j int) (float64, float64, bool) {
 
 func f(x, y float64) (float64, bool) {
 	ok := true
-	r := math.Hypot(x, y) //distance from (0,0)
-	result := math.Sin(r) / r
+	//ex. 3.1
+	// r := math.Hypot(x, y) //distance from (0,0)
+	// result := math.Sin(r) / r
+	//ex. 3.2
+	result := math.Pow(x, 3) - 3*x*math.Pow(y, 2)
 
 	//if result is NaN of Inf stop processing
 	if math.IsInf(result, 0) || math.IsNaN(result) {
