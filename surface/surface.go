@@ -7,7 +7,11 @@ package main
 
 import (
 	"fmt"
+	"io"
+	"log"
 	"math"
+	"net/http"
+	"os"
 )
 
 const (
@@ -35,14 +39,26 @@ type Polygon struct {
 
 var sin30, cos30 = math.Sin(angle), math.Cos(angle) //sin 30 deg and cos 30 deg
 var polygons [cells][cells]Polygon
+var w io.Writer = os.Stdout
 
 func main() {
-	genSVG()
+	if len(os.Args) > 1 && os.Args[1] == "web" {
+		http.HandleFunc("/", webHandler)
+		log.Fatal(http.ListenAndServe("localhost:8001", nil))
+
+	} else {
+		genSVG(w)
+	}
 }
 
-func genSVG() {
+func webHandler(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "image/svg+xml")
+	genSVG(w)
+}
 
-	fmt.Printf("<svg xmlns='http://www.w3.org/2000/svg' "+
+func genSVG(w io.Writer) {
+
+	fmt.Fprintf(w, "<svg xmlns='http://www.w3.org/2000/svg' "+
 		"style='stroke: grey; fill: white; stroke-width: 0.7' "+
 		"width='%d' height='%d'>\n", width, height)
 
@@ -54,7 +70,7 @@ func genSVG() {
 			blue := 255 - red
 			green := 0
 
-			fmt.Printf("<polygon points='%g, %g, %g, %g, %g, %g, %g, %g' fill='rgb(%d,%d,%d)'/>\n",
+			fmt.Fprintf(w, "<polygon points='%g, %g, %g, %g, %g, %g, %g, %g' fill='rgb(%d,%d,%d)'/>\n",
 				polygons[i][j].ax, polygons[i][j].ay,
 				polygons[i][j].bx, polygons[i][j].by,
 				polygons[i][j].cx, polygons[i][j].cy,
@@ -65,7 +81,7 @@ func genSVG() {
 
 		}
 	}
-	fmt.Println("</svg>")
+	fmt.Fprintf(w, "</svg>")
 }
 
 func genPolygons() (float64, float64) {
@@ -86,9 +102,7 @@ func genPolygons() (float64, float64) {
 			if polygons[i][j].dx, polygons[i][j].dy, dz, ok = corner(i+1, j+1); !ok {
 				continue
 			}
-			// if ok {
-			// 	continue
-			// }
+
 			zavg = (az + bz + cz + dz) / 4
 			polygons[i][j].zavg = zavg
 			polygons[i][j].az = az
