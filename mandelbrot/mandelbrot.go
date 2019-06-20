@@ -8,6 +8,7 @@ import (
 	"image"
 	"image/color"
 	"image/png"
+	"math"
 	"math/cmplx"
 	"os"
 )
@@ -38,8 +39,36 @@ func mandelbrot(z complex128) color.Color {
 	for n := uint8(0); n < iterations; n++ {
 		v = v*v + z
 		if cmplx.Abs(v) > 2 {
-			return color.Gray{255 - contrast*n}
+			// return map2RGB{255 - contrast*n}
+			return map2RGB(255 - 16*n)
 		}
 	}
+	return color.Black
+}
+
+// Map the number of iterations into the color pallet
+//
+// c.f. http://www.rapidtables.com/convert/color/hsv-to-rgb.htm
+
+func map2RGB(n uint8) color.Color {
+
+	h := 360 * float64(n) / 256
+	x := uint8(255 * (1 - math.Abs(math.Mod(h/60, 2)-1)))
+
+	switch {
+	case h < 60:
+		return color.RGBA{255, x, 0, 255}
+	case h < 120:
+		return color.RGBA{x, 255, 0, 255}
+	case h < 180:
+		return color.RGBA{0, 255, x, 255}
+	case h < 240:
+		return color.RGBA{0, x, 255, 255}
+	case h < 300:
+		return color.RGBA{x, 0, 255, 255}
+	default:
+		return color.RGBA{255, 0, x, 255}
+	}
+
 	return color.Black
 }
