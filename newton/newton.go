@@ -14,13 +14,13 @@ import (
 )
 
 const (
-	width                  = 1024
-	height                 = 1042
+	width                  = 4096
+	height                 = 4096
 	xmin, ymin, xmax, ymax = -2, -2, +2, 2
 )
 
 func main() {
-	img := image.NewRGBA(image.Rect(0, 0, width/2, height/2))
+	img := image.NewRGBA(image.Rect(0, 0, width, height))
 	for i := 0; i < height; i++ {
 		y := float64(i)/height*(ymax-ymin) + ymin
 		for j := 0; j < width; j++ {
@@ -34,7 +34,7 @@ func main() {
 
 func newton(x complex128) color.Color {
 	const (
-		iterations = 37
+		iterations = 255
 		contrast   = 16
 		threshold  = 0.000001
 	)
