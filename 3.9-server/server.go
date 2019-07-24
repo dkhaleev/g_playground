@@ -67,7 +67,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 			height, err = strconv.Atoi(val[0])
 			if err != nil {
 				log.Print(err)
-				height = 0
+				height = 1024
 			}
 			break
 		case "visualizer":
@@ -87,9 +87,20 @@ func render(writer http.ResponseWriter, xmin float64, xmax float64, ymin float64
 		for j := 0; j < width; j++ {
 			x := float64(j)/float64(width)*(xmax-xmin) + xmin
 			z := complex(x, y)
-			img.Set(i, j, newton(z))
+			switch visualizer {
+			case "newton":
+				img.Set(i, j, newton(z))
+				break
+			case "mandelbrot":
+				img.Set(i, j, mandelbrot(z))
+				break
+			default:
+				img.Set(i, j, mandelbrot(z))
+				break
+			}
 		}
 	}
+
 	png.Encode(writer, img)
 }
 
