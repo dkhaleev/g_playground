@@ -40,8 +40,8 @@ func newton(x complex128) color.Color {
 	)
 
 	for n := uint8(0); n < iterations; n++ {
-		x = x - (x-1/(x*x*x))/4
-		if cmplx.Abs(x*x*x*x-1) < threshold {
+		x = x - (x-1/(cmplx.Pow(x, 3)))/4
+		if cmplx.Abs(cmplx.Pow(x, 4)-1) < threshold {
 			return map2RGB(255 - contrast*n)
 		}
 	}
