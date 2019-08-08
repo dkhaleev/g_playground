@@ -25,7 +25,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	var x, y, zoom float64
 	var width, height int
 	var err error
-	var visualizer = "mandelbrot"
+	var visualizer string
 
 	//parse form first
 	if err := r.ParseForm(); err != nil {
@@ -72,6 +72,10 @@ func handler(w http.ResponseWriter, r *http.Request) {
 			break
 		case "visualizer":
 			visualizer = val[0]
+			if err != nil{
+				log.Print(err)
+				visualizer = "mandelbrot"
+			}
 			break
 		}
 	}
@@ -79,8 +83,6 @@ func handler(w http.ResponseWriter, r *http.Request) {
 }
 
 func render(writer http.ResponseWriter, xmin float64, xmax float64, ymin float64, ymax float64, visualizer string, width int, height int) {
-
-	// func main() {
 	img := image.NewRGBA(image.Rect(0, 0, width, height))
 	for i := 0; i < height; i++ {
 		y := float64(i)/float64(height)*(ymax-ymin) + ymin
@@ -128,7 +130,6 @@ func mandelbrot(z complex128) color.Color {
 	for n := uint8(0); n < iterations; n++ {
 		v = v*v + z
 		if cmplx.Abs(v) > 2 {
-			// return map2RGB{255 - contrast*n}
 			return map2RGB(255 - 16*n)
 		}
 	}
